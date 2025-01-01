@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <!-- Label은 유일해야 합니다. (서비스 식별자) -->
+        <key>Label</key>
+        <string>com.username.bootcrawl</string>
+
+        <!-- 부팅 시점에 실행 -->
+        <key>RunAtLoad</key>
+        <true/>
+
+        <!-- 실행할 명령어(파이썬 스크립트 경로) -->
+        <key>ProgramArguments</key>
+        <array>
+            <string>/usr/bin/env</string>
+            <string>python3</string>
+            <string>/Users/username/my_crawler/crawl.py</string>
+        </array>
+
+        <!-- 표준 출력, 오류를 각각 어디에 기록할지 설정 가능(로그확인용) -->
+        <key>StandardOutPath</key>
+        <string>/tmp/boot_crawl_stdout.log</string>
+        <key>StandardErrorPath</key>
+        <string>/tmp/boot_crawl_stderr.log</string>
+    </dict>
+</plist>
+
