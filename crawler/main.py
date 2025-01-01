@@ -1,7 +1,10 @@
 import os
 import sys
+import time
+import socket
 import yaml
 import logging
+import requests
 from crawler.parser import parse_page
 
 def setup_logger():
@@ -31,8 +34,27 @@ def load_config():
     with open(real_config, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
+def is_internet_connected(url="https://www.google.com", timeout=3):
+    try:
+        requests.head(url, timeout=timeout)
+        return True
+    except requests.RequestException:
+        return False
+
+def wait_for_internet(interval=5, retry_delay=5):
+    logging.info("Checking internet connection...")
+    while True:
+        if is_internet_connected():
+            logging.info("Internet connected. Proceeding...")
+            return
+        else:
+            logging.warning("Internet not connected. Waiting for retry...")
+            time.sleep(retry_delay)
+
 def main():
     setup_logger()
+
+    wait_for_internet()
 
     config = load_config()
     targets = config.get("crawl_targets", [])
@@ -44,7 +66,23 @@ def main():
         for data_item in data_list:
             data_name = data_item.get("data_name")
             print(f"\n== Crawling {name} :: {data_name} ==")
-            results = parse_page(data_item)
+
+            # 혹시 크롤링 도중에 인터넷이 다시 끊길 수도 있으므로
+            # 추가로 예외처리를 넣고, 끊기면 다시 연결 기다리게끔 구성.
+            while True:
+                try:
+                    results = parse_page(data_item)
+                    for item in results:
+                        logging.info(item)
+                    break
+
+                except requests.ConnectionError as ce:
+                    logging.error(f"Connection error: {ce}")
+                    logging.info("Re-checking internet connection...")
+                    wait_for_internet()
+                except Exception as e:
+                    logging.error(f"Unexpected error: {e}")
+                    break
 
             for item in results:
                 logging.info(item)
