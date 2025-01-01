@@ -16,7 +16,7 @@
         <array>
             <string>/usr/bin/env</string>
             <string>python3</string>
-            <string>/Users/username/my_crawler/crawl.py</string>
+            <string>/Users/username/my_crawler/crawler/main.py</string>
         </array>
 
         <!-- 표준 출력, 오류를 각각 어디에 기록할지 설정 가능(로그확인용) -->

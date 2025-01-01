@@ -28,24 +28,32 @@ mac-launchd-autocrawl
     <array>
       <string>/usr/bin/env</string>
       <string>python3</string>
-      <string>/Users/username/my_crawler/crawl.py</string>
+      <string>/Users/username/my_crawler/crawler/main.py</string>
     </array>
 ```
 
-/Users/username/my_crawler/crawl.py 위치에 실제로 실행할 파이썬 크롤러 스크립트를 배치하세요.
+/Users/username/my_crawler/crawler/main.py 위치에 실제로 실행할 파이썬 크롤러 스크립트를 배치하세요.
 
 (2) 파이썬 스크립트 준비
-  - 예: /Users/username/my_crawler/crawl.py
-  - 크롤링 동작을 위한 코드를 직접 작성합니다.
-  - 실행 여부 확인을 위해 로그 파일 작성이나 콘솔 출력이 필요하다면, 코드에 추가해 주세요.
 
-(3) Launchd 로드
+예: /Users/username/my_crawler/crawler/main.py
+크롤링 동작을 위한 코드를 직접 작성합니다.
+실행 여부 확인을 위해 로그 파일 작성이나 콘솔 출력이 필요하다면, 코드에 추가해 주세요.
+
+(3) sites.yaml 파일 준비
+
+main.py에서 실제 크롤링 대상 정보를 읽기 위해서는 sites.yaml 파일이 있어야 합니다.
+sites.yaml 파일이 존재하지 않으면 스크립트가 동작하지 않습니다.
+예시로, sites.yaml 파일에는 각 대상 페이지의 url, 필요한 셀렉터(selector) 정보 등을 담아야 합니다(페이지마다 구조가 다르므로).
+sites.example.yaml 샘플 파일을 참고하여, 크롤링 대상에 맞는 내용을 구체적으로 작성해 주세요.
+
+(4) Launchd 로드
   - plist 파일을 load해서 Launch Agent로 등록합니다:
     launchctl load -w ~/Library/LaunchAgents/com.username.bootcrawl.plist
   - -w 옵션은 "영구적으로(override 설정) 등록"을 의미합니다.
-  - Mac을 재부팅하면, 부팅 시점에 crawl.py 스크립트가 한 번 실행됩니다.
+  - Mac을 재부팅하면, 부팅 시점에 main.py 스크립트가 한 번 실행됩니다.
 
-(4) 수정 후 재로드
+(5) 수정 후 재로드
   - plist 파일을 수정한 뒤에는 다음과 같이 먼저 unload 후 다시 load해야 합니다:
 
 ```
@@ -53,8 +61,8 @@ mac-launchd-autocrawl
     launchctl load -w ~/Library/LaunchAgents/com.username.bootcrawl.plist
 ```
 
-(5) 실행 확인
-  - 재부팅 후(또는 사용자 로그인 시) crawl.py가 자동으로 실행되는지 확인합니다.
+(6) 실행 확인
+  - 재부팅 후(또는 사용자 로그인 시) main.py가 자동으로 실행되는지 확인합니다.
   - 로그 파일 등을 통해 실행 결과를 확인하실 수 있습니다.
 
 --------------------------------------------------------------------------------
