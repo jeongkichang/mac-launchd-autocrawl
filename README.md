@@ -23,15 +23,16 @@ mac-launchd-autocrawl
   - 이 파일은 User 계정에서 동작하도록 작성되었습니다.
   - (예시 이름) com.username.bootcrawl.plist를 ~/Library/LaunchAgents 경로에 복사 또는 생성합니다.
   - 아래와 같이 ProgramArguments에 실제 파이썬 스크립트 경로를 지정합니다:
-
+```
     <key>ProgramArguments</key>
     <array>
       <string>/usr/bin/env</string>
       <string>python3</string>
       <string>/Users/username/my_crawler/crawl.py</string>
     </array>
+```
 
-    /Users/username/my_crawler/crawl.py 위치에 실제로 실행할 파이썬 크롤러 스크립트를 배치하세요.
+/Users/username/my_crawler/crawl.py 위치에 실제로 실행할 파이썬 크롤러 스크립트를 배치하세요.
 
 (2) 파이썬 스크립트 준비
   - 예: /Users/username/my_crawler/crawl.py
@@ -46,8 +47,11 @@ mac-launchd-autocrawl
 
 (4) 수정 후 재로드
   - plist 파일을 수정한 뒤에는 다음과 같이 먼저 unload 후 다시 load해야 합니다:
+
+```
     launchctl unload ~/Library/LaunchAgents/com.username.bootcrawl.plist
     launchctl load -w ~/Library/LaunchAgents/com.username.bootcrawl.plist
+```
 
 (5) 실행 확인
   - 재부팅 후(또는 사용자 로그인 시) crawl.py가 자동으로 실행되는지 확인합니다.
