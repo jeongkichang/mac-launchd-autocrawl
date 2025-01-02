@@ -67,9 +67,10 @@ def main():
             data_name = data_item.get("data_name")
             print(f"\n== Crawling {name} :: {data_name} ==")
 
-            # 혹시 크롤링 도중에 인터넷이 다시 끊길 수도 있으므로
-            # 추가로 예외처리를 넣고, 끊기면 다시 연결 기다리게끔 구성.
-            while True:
+            MAX_RETRIES = 5
+            retry_count = 0
+
+            while retry_count < MAX_RETRIES:
                 try:
                     results = parse_page(data_item)
                     for item in results:
@@ -77,9 +78,14 @@ def main():
                     break
 
                 except requests.ConnectionError as ce:
-                    logging.error(f"Connection error: {ce}")
-                    logging.info("Re-checking internet connection...")
-                    wait_for_internet()
+                    retry_count += 1
+                    logging.error(f"Connection error (attempt {retry_count}/{MAX_RETRIES}): {ce}")
+                    if retry_count < MAX_RETRIES:
+                        logging.info("Re-checking internet connection...")
+                        wait_for_internet()
+                    else:
+                        logging.error("Max retries reached. Exiting for this data item.")
+                        break
                 except Exception as e:
                     logging.error(f"Unexpected error: {e}")
                     break
