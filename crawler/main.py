@@ -5,6 +5,8 @@ import socket
 import yaml
 import logging
 import requests
+from pymongo import MongoClient
+from dotenv import load_dotenv
 from crawler.parser import parse_page
 
 def setup_logger():
@@ -51,8 +53,26 @@ def wait_for_internet(interval=5, retry_delay=5):
             logging.warning("Internet not connected. Waiting for retry...")
             time.sleep(retry_delay)
 
+def connect_to_mongo(uri, database_name, collection_name):
+    try:
+        client = MongoClient(uri)
+        db = client[database_name]
+        collection = db[collection_name]
+        logging.info(f"Connected to MongoDB: {database_name}.{collection_name}")
+        return collection
+    except Exception as e:
+        logging.error(f"Failed to connect to MongoDB: {e}")
+        sys.exit(1)
+
 def main():
     setup_logger()
+
+    load_dotenv()
+    MONGO_URI = os.getenv("MONGO_URI")
+    DATABASE_NAME = os.getenv("DATABASE_NAME")
+    COLLECTION_NAME = os.getenv("COLLECTION_NAME")
+
+    collection = connect_to_mongo(MONGO_URI, DATABASE_NAME, COLLECTION_NAME)
 
     wait_for_internet()
 
