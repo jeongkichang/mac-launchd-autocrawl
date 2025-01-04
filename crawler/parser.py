@@ -2,6 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 def parse_free_swim_single_use(url, table_selector, row_selector, filter_keyword):
+    if not url.startswith("http://") and not url.startswith("https://"):
+        url = f"https://{url}"
+        try:
+            resp = requests.get(url)
+        except requests.exceptions.RequestException:
+            url = url.replace("https://", "http://")
+
     resp = requests.get(url)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -50,14 +57,9 @@ def parse_free_swim_single_use(url, table_selector, row_selector, filter_keyword
 
 
 def parse_page(data_config):
-    data_name = data_config.get("data_name")
     url = data_config.get("url")
     table_selector = data_config.get("table_selector")
     row_selector = data_config.get("row_selector")
     filter_keyword = data_config.get("filter_keyword")
 
-    if data_name == "free_swim_single_use":
-        return parse_free_swim_single_use(url, table_selector, row_selector, filter_keyword)
-    else:
-        print(f"No parser implemented for data_name: {data_name}")
-        return []
+    return parse_free_swim_single_use(url, table_selector, row_selector, filter_keyword)

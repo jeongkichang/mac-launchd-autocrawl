@@ -40,13 +40,6 @@ mac-launchd-autocrawl
 크롤링 동작을 위한 코드를 직접 작성합니다.
 실행 여부 확인을 위해 로그 파일 작성이나 콘솔 출력이 필요하다면, 코드에 추가해 주세요.
 
-(3) sites.yaml 파일 준비
-
-main.py에서 실제 크롤링 대상 정보를 읽기 위해서는 sites.yaml 파일이 있어야 합니다.
-sites.yaml 파일이 존재하지 않으면 스크립트가 동작하지 않습니다.
-예시로, sites.yaml 파일에는 각 대상 페이지의 url, 필요한 셀렉터(selector) 정보 등을 담아야 합니다(페이지마다 구조가 다르므로).
-sites.example.yaml 샘플 파일을 참고하여, 크롤링 대상에 맞는 내용을 구체적으로 작성해 주세요.
-
 (4) Launchd 로드
   - plist 파일을 load해서 Launch Agent로 등록합니다:
     launchctl load -w ~/Library/LaunchAgents/com.username.bootcrawl.plist
