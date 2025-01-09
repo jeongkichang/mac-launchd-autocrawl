@@ -1,9 +1,17 @@
+import os
+from dotenv import load_dotenv
 import google.generativeai as genai
 
-genai.configure(api_key="")
+load_dotenv()
+
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise ValueError("GEMINI_API_KEY is not set in the .env file")
+
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-text="""
+text = """
 <content></content> 내용을 참고해서 자유 수영에 대한 정보를 정리해줘.
 1회 이용에 대한 정보만 정리해줘.
 같은 시간대에 요금이 상이하면, 상이한대로 시간과 함께 구별해서 모두 표기해줘.
@@ -21,4 +29,5 @@ ex.
 """
 
 response = model.generate_content(text)
+
 print(response.text)
