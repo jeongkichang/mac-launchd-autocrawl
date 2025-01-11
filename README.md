@@ -28,15 +28,15 @@ mac-launchd-autocrawl
     <array>
       <string>/usr/bin/env</string>
       <string>python3</string>
-      <string>/Users/username/my_crawler/crawler/main.py</string>
+      <string>/Users/username/my_crawler/run.py</string>
     </array>
 ```
 
-/Users/username/my_crawler/crawler/main.py 위치에 실제로 실행할 파이썬 크롤러 스크립트를 배치하세요.
+/Users/username/my_crawler/run.py 위치에 실제로 실행할 파이썬 크롤러 스크립트를 배치하세요.
 
 (2) 파이썬 스크립트 준비
 
-예: /Users/username/my_crawler/crawler/main.py
+예: /Users/username/my_crawler/run.py
 크롤링 동작을 위한 코드를 직접 작성합니다.
 실행 여부 확인을 위해 로그 파일 작성이나 콘솔 출력이 필요하다면, 코드에 추가해 주세요.
 
@@ -55,7 +55,7 @@ mac-launchd-autocrawl
 ```
 
 (6) 실행 확인
-  - 재부팅 후(또는 사용자 로그인 시) main.py가 자동으로 실행되는지 확인합니다.
+  - 재부팅 후(또는 사용자 로그인 시) run.py가 자동으로 실행되는지 확인합니다.
   - 로그 파일 등을 통해 실행 결과를 확인하실 수 있습니다.
 
 --------------------------------------------------------------------------------
