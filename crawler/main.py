@@ -5,7 +5,6 @@ import logging
 import requests
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from crawler.parser import parse_page
 from bs4 import BeautifulSoup
 import google.generativeai as genai
 
